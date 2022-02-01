@@ -1,62 +1,88 @@
-const app = {
-	title: 'Indecision App',
-	subtitle: 'Put your life in the hands of a computer',
-	options: [],
-};
+class IndecisionApp extends React.Component {
+	render() {
+		const title = 'Indecision';
+		const subtitle = 'Put your life in the hands of a computer';
+		const options = ['One', 'Two', 'Three', 'Four'];
 
-const onFormSubmit = (e) => {
-	e.preventDefault();
-
-	const option = e.target.elements.option.value;
-
-	if (!option) {
-		return console.log('Option cannot be empty!');
+		return (
+			<div>
+				<Header title={title} subtitle={subtitle} />
+				<Action />
+				<Options options={options} />
+				<AddOption />
+			</div>
+		);
 	}
+}
 
-	app.options.push(option);
-	e.target.elements.option.value = '';
-	return renderApp();
-};
+class Header extends React.Component {
+	render() {
+		return (
+			<div>
+				<h1>{this.props.title}</h1>
+				<h2>{this.props.subtitle}</h2>
+			</div>
+		);
+	}
+}
 
-const removeOptions = () => {
-	app.options.length = 0;
-	return renderApp();
-};
+class Action extends React.Component {
+	pickAction() {
+		console.log('picked');
+	}
+	render() {
+		return (
+			<div>
+				<button onClick={this.pickAction}>What should I do?</button>
+			</div>
+		);
+	}
+}
 
-const makeDecision = () => {
-	const randomNumber = Math.floor(Math.random() * app.options.length);
-	const option = app.options[randomNumber];
-	alert(option);
-};
+class Options extends React.Component {
+	removeAll() {
+		console.log('remove all');
+	}
+	render() {
+		return (
+			<div>
+				<button onClick={this.removeAll}>Remove all</button>
+				{this.props.options.map((option) => {
+					return <Option key={option} option={option} />;
+				})}
+			</div>
+		);
+	}
+}
 
-const appRoot = document.getElementById('app');
+class Option extends React.Component {
+	render() {
+		return <p>{this.props.option}</p>;
+	}
+}
 
-const renderApp = () => {
-	const template = (
-		<div>
-			<h1>{app.title}</h1>
-			{app.subtitle && <p>{app.subtitle}</p>}
-			<p>{app.options.length > 0 ? 'Here are your options' : 'No options'}</p>
-			<button disabled={app.options.length === 0} onClick={makeDecision}>
-				What should I do?
-			</button>
-			<button disabled={app.options.length === 0} onClick={removeOptions}>
-				Remove all
-			</button>
-			{app.options.length > 0 && (
-				<ol>
-					{app.options.map((option) => {
-						return <li key={app.options.length + option}>{option}</li>;
-					})}
-				</ol>
-			)}
-			<form onSubmit={onFormSubmit}>
+class AddOption extends React.Component {
+	addOption(e) {
+		e.preventDefault();
+
+		const input = e.target.option.value.trim();
+
+		if (!input) {
+			e.target.option.value = '';
+			return console.log('Action cannot be empty!');
+		}
+
+		e.target.option.value = '';
+		console.log(input);
+	}
+	render() {
+		return (
+			<form onSubmit={this.addOption}>
 				<input type="text" name="option" />
 				<button>Add</button>
 			</form>
-		</div>
-	);
-	ReactDOM.render(template, appRoot);
-};
+		);
+	}
+}
 
-renderApp();
+ReactDOM.render(<IndecisionApp />, document.getElementById('app'));
