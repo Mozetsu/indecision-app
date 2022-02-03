@@ -21,6 +21,7 @@ var IndecisionApp = function (_React$Component) {
 		_this.handlePick = _this.handlePick.bind(_this);
 		_this.handleAddOption = _this.handleAddOption.bind(_this);
 		_this.handleDeleteOptions = _this.handleDeleteOptions.bind(_this);
+		_this.handleDeleteOption = _this.handleDeleteOption.bind(_this);
 		_this.state = {
 			options: ['One', 'Two', 'Three']
 		};
@@ -28,6 +29,16 @@ var IndecisionApp = function (_React$Component) {
 	}
 
 	_createClass(IndecisionApp, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			console.log('Mounted');
+		}
+	}, {
+		key: 'componentDidUpdate',
+		value: function componentDidUpdate() {
+			console.log('Updated');
+		}
+	}, {
 		key: 'handlePick',
 		value: function handlePick() {
 			var randomIndex = Math.floor(Math.random() * this.state.options.length);
@@ -44,32 +55,42 @@ var IndecisionApp = function (_React$Component) {
 			}
 
 			this.setState(function (prevState) {
-				return {
-					options: [].concat(_toConsumableArray(prevState.options), [option])
-				};
+				return { options: [].concat(_toConsumableArray(prevState.options), [option]) };
 			});
 		}
 	}, {
 		key: 'handleDeleteOptions',
 		value: function handleDeleteOptions() {
 			this.setState(function () {
+				return { options: [] };
+			});
+		}
+	}, {
+		key: 'handleDeleteOption',
+		value: function handleDeleteOption(optionToRemove) {
+			this.setState(function (prevState) {
 				return {
-					options: []
+					options: prevState.options.filter(function (option) {
+						return option !== optionToRemove;
+					})
 				};
 			});
 		}
 	}, {
 		key: 'render',
 		value: function render() {
-			var title = 'Indecision';
 			var subtitle = 'Put your life in the hands of a computer';
 
 			return React.createElement(
 				'div',
 				null,
-				React.createElement(Header, { title: title, subtitle: subtitle }),
+				React.createElement(Header, { subtitle: subtitle }),
 				React.createElement(Action, { hasOptions: this.state.options.length > 0, handlePick: this.handlePick }),
-				React.createElement(Options, { options: this.state.options, handleDeleteOptions: this.handleDeleteOptions }),
+				React.createElement(Options, {
+					options: this.state.options,
+					handleDeleteOptions: this.handleDeleteOptions,
+					handleDeleteOption: this.handleDeleteOption
+				}),
 				React.createElement(AddOption, { handleAddOption: this.handleAddOption })
 			);
 		}
@@ -90,12 +111,16 @@ var Header = function Header(_ref) {
 			null,
 			title
 		),
-		React.createElement(
+		subtitle && React.createElement(
 			'h2',
 			null,
 			subtitle
 		)
 	);
+};
+
+Header.defaultProps = {
+	title: 'Indecision'
 };
 
 var Action = function Action(_ref2) {
@@ -115,6 +140,7 @@ var Action = function Action(_ref2) {
 
 var Options = function Options(_ref3) {
 	var handleDeleteOptions = _ref3.handleDeleteOptions,
+	    handleDeleteOption = _ref3.handleDeleteOption,
 	    options = _ref3.options;
 
 	return React.createElement(
@@ -126,18 +152,30 @@ var Options = function Options(_ref3) {
 			'Remove all'
 		),
 		options.map(function (option) {
-			return React.createElement(Option, { key: option, option: option });
+			return React.createElement(Option, { key: option, option: option, handleDeleteOption: handleDeleteOption });
 		})
 	);
 };
 
 var Option = function Option(_ref4) {
-	var option = _ref4.option;
+	var option = _ref4.option,
+	    handleDeleteOption = _ref4.handleDeleteOption;
 
 	return React.createElement(
-		'p',
-		null,
-		option
+		'div',
+		{ style: { padding: '10px 0' } },
+		React.createElement(
+			'p',
+			{ style: { display: 'inline', marginRight: '20px' } },
+			option
+		),
+		React.createElement(
+			'button',
+			{ onClick: function onClick() {
+					return handleDeleteOption(option);
+				} },
+			'remove'
+		)
 	);
 };
 
@@ -165,9 +203,7 @@ var AddOption = function (_React$Component2) {
 			var error = this.props.handleAddOption(input);
 
 			this.setState(function () {
-				return {
-					error: error
-				};
+				return { error: error };
 			});
 
 			e.target.option.value = '';
