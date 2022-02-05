@@ -1,20 +1,39 @@
 import React from 'react';
 import Header from './Header';
 import Action from './Action';
-import Options from './Option';
+import Options from './Options';
 import AddOption from './AddOption';
 
 export default class IndecisionApp extends React.Component {
-	constructor(props) {
-		super(props);
-		this.handlePick = this.handlePick.bind(this);
-		this.handleAddOption = this.handleAddOption.bind(this);
-		this.handleDeleteOptions = this.handleDeleteOptions.bind(this);
-		this.handleDeleteOption = this.handleDeleteOption.bind(this);
-		this.state = {
-			options: [],
-		};
-	}
+	state = {
+		options: [],
+	};
+
+	handlePick = () => {
+		const randomIndex = Math.floor(Math.random() * this.state.options.length);
+		const option = this.state.options[randomIndex];
+		return console.log(option);
+	};
+
+	handleAddOption = (option) => {
+		if (!option) {
+			return 'Action cannot be empty!';
+		} else if (this.state.options.indexOf(option) > -1) {
+			return 'Option already exists!';
+		}
+
+		this.setState((prevState) => ({ options: [...prevState.options, option] }));
+	};
+
+	handleDeleteOptions = () => {
+		this.setState(() => ({ options: [] }));
+	};
+
+	handleDeleteOption = (optionToRemove) => {
+		this.setState((prevState) => ({
+			options: prevState.options.filter((option) => option !== optionToRemove),
+		}));
+	};
 
 	componentDidMount() {
 		try {
@@ -32,32 +51,6 @@ export default class IndecisionApp extends React.Component {
 
 		const data = JSON.stringify(this.state.options);
 		return localStorage.setItem('options', data);
-	}
-
-	handlePick() {
-		const randomIndex = Math.floor(Math.random() * this.state.options.length);
-		const option = this.state.options[randomIndex];
-		return console.log(option);
-	}
-
-	handleAddOption(option) {
-		if (!option) {
-			return 'Action cannot be empty!';
-		} else if (this.state.options.indexOf(option) > -1) {
-			return 'Option already exists!';
-		}
-
-		this.setState((prevState) => ({ options: [...prevState.options, option] }));
-	}
-
-	handleDeleteOptions() {
-		this.setState(() => ({ options: [] }));
-	}
-
-	handleDeleteOption(optionToRemove) {
-		this.setState((prevState) => ({
-			options: prevState.options.filter((option) => option !== optionToRemove),
-		}));
 	}
 
 	render() {
