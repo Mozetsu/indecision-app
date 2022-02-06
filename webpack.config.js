@@ -13,10 +13,18 @@ module.exports = {
 				test: /\.js$/,
 				exclude: /node_modules/,
 			},
+			{
+				use: ['style-loader', 'css-loader', 'sass-loader'],
+				test: /\.scss$/,
+			},
 		],
 	},
-	devtool: 'cheap-module-eval-source-map',
 	devServer: {
-		contentBase: path.join(__dirname, 'public'),
+		static: {
+			directory: path.join(__dirname, 'public'),
+		},
+		compress: true,
+		port: 8080,
+		webSocketServer: 'ws',
 	},
 };
