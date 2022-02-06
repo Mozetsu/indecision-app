@@ -1,9 +1,13 @@
 import React from 'react';
 
-const Option = ({ option, handleDeleteOption }) => (
-	<div style={{ padding: '10px 0' }}>
-		<p style={{ display: 'inline', marginRight: '20px' }}>{option}</p>
-		<button onClick={() => handleDeleteOption(option)}>remove</button>
+const Option = ({ option, count, handleDeleteOption }) => (
+	<div className="option">
+		<p className="option__text">
+			{count}. {option}
+		</p>
+		<button className="button button--link" onClick={() => handleDeleteOption(option)}>
+			remove
+		</button>
 	</div>
 );
 
