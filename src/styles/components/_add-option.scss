@@ -19,3 +19,13 @@
 	color: $off-white;
 	padding: $s-size;
 }
+
+@media screen and (max-width: $mobile-breakpoint) {
+	.add-option {
+		flex-direction: column;
+	}
+
+	.add-option__input {
+		margin: 0 0 $m-size 0;
+	}
+}

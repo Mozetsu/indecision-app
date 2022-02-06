@@ -31,3 +31,9 @@
 	color: $off-white;
 	padding: 0;
 }
+
+@media screen and (max-width: $mobile-breakpoint) {
+	.big-button {
+		margin-bottom: $m-size;
+	}
+}
