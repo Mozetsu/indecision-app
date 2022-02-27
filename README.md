@@ -2,18 +2,13 @@
 
 Basic React application built from scratch using webpack and babel. Users can add tasks into an ordered list and then ask the computer to pick one of the given activities.
 
-## 📄 Objective
+## Objective
 ...
-
-## ⚙️ Stack
+## Stack
 ...
-## 🎉 Features
+## Features
 ...
-## 💡 Explained
+## Development
 ...
-
-## ⚡ Result
-...
-
-## 🔒 Conclusion
+## Conclusion
 ...
