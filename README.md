@@ -2,6 +2,11 @@
 
 Basic React application built from scratch using webpack and babel. Users can add tasks into an ordered list and then ask the computer to pick one of the given activities.
 
+<p align="center">
+  <img src="/assets/preview.png" width="100%">
+</p>
+
+
 ## Objective
 Build a responsive application to manage todos with React.
 
